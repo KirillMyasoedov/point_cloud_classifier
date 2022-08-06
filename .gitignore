@@ -1,0 +1,13 @@
+bags/
+build/
+images/
+.idea/
+install/
+rgb_model/
+tests/
+venv/
+src/__pycache__/
+src/criterions/__pycache__/
+src/models/__pycache__/
+src/utils/__pycache__/
+product/

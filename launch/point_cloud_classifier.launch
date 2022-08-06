@@ -1,0 +1,12 @@
+<launch>
+    <arg name="camera" default="first"/>
+    <arg name="environment" default="flat"/>
+    <arg name="node_name" default="point_cloud_classifier_1"/>
+
+    <node pkg="point_cloud_classifier" type="point_cloud_classifier_main.py" name="$(arg node_name)" output="screen">
+        <!-- Write "first" of "second"  -->
+        <param name="camera" type="str" value="$(arg camera)" />
+        <!-- Write "flat" of "unstructured" -->
+        <param name="environment" type="str" value="$(arg environment)"/>
+    </node>
+</launch>

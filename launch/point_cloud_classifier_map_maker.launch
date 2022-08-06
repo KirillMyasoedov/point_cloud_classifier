@@ -1,0 +1,29 @@
+<launch>
+    <include file="$(find point_cloud_classifier)/launch/point_cloud_classifier.launch">
+        <arg name="camera" value="first"/>
+        <arg name="environment" value="flat"/>
+        <arg name="node_name" value="point_cloud_classifier"/>
+    </include>
+
+<!--    <include file="$(find point_cloud_classifier)/launch/point_cloud_classifier.launch">-->
+<!--        <arg name="camera" value="second"/>-->
+<!--        <arg name="environment" value="flat"/>-->
+<!--        <arg name="node_name" value="point_cloud_classifier_2"/>-->
+<!--    </include>-->
+
+    <include file="$(find map_maker)/launch/map_maker.launch">
+        <arg name="cameras_number" value="1"/>
+        <arg name="environment" value="flat"/>
+        <arg name="map_type" value="probability_map"/>
+        <arg name="measurement_type" value="per_cell_measurement"/>
+    </include>
+
+    <arg name="node_start_delay" default="22.0" />
+    <node pkg="rosbag"
+          type="play"
+          name="player"
+          args="--clock /home/kirill/catkin_ws/src/point_cloud_classifier/bags/setup5.bag"
+          launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d /home/kirill/catkin_ws/src/point_cloud_classifier/configs/configs.rviz"/>
+</launch>

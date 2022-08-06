@@ -1,0 +1,48 @@
+@startuml
+PointCloudClassifier .. PointCloudClassifierNodeFactory
+PointCloudClassifier .. PointCloudClassifierTrainer
+
+PointCloudClassifierTrainer : +train_point_cloud_classifier()
+
+PointCloudClassifierNodeFactory .. PointCloudClassifierNode
+PointCloudClassifierNodeFactory : +make_point_cloud_classifier_node()
+
+PointCloudClassifierNode : InputPointCloudClassifierAdapterOne
+PointCloudClassifierNode : InputPointCloudClassifierAdapterTwo
+PointCloudClassifierNode : PointCloudClassifierTester
+PointCloudClassifierNode : OutputPointCloudClassifierAdapter
+PointCloudClassifierNode : -timer_callback()
+
+PointCloudClassifierNode o-- InputPointCloudClassifierAdapter
+PointCloudClassifierNode o-- PointCloudClassifierTester
+PointCloudClassifierNode o-- OccupancyGridMaker
+PointCloudClassifierNode o-- OutputPointCloudClassifierAdapter
+
+InputPointCloudClassifierAdapter : -image_subscriber
+InputPointCloudClassifierAdapter : -point_cloud_subscriber
+InputPointCloudClassifierAdapter : -camera_info_subscriber
+InputPointCloudClassifierAdapter : -image_callback()
+InputPointCloudClassifierAdapter : -point_cloud_callback()
+InputPointCloudClassifierAdapter : -camera_info_callback()
+InputPointCloudClassifierAdapter : +get_image_array()
+InputPointCloudClassifierAdapter : +get_point_cloud()
+InputPointCloudClassifierAdapter : +get_camera_intrinsics()
+
+PointCloudClassifierTester : ImagesSegmentator
+PointCloudClassifierTester : PointCloudBackProjector
+PointCloudClassifierTester : PointCloudClassifierAccuracyCalculator
+
+PointCloudClassifierTester *-- ImagesSegmentator
+PointCloudClassifierTester *-- PointCloudBackProjector
+PointCloudClassifierTester *-- PointCloudClassifierAccuracyCalculator
+
+PointCloudClassifierTester : +launch_point_cloud_classifier_tester()
+
+ImagesSegmentator : +segment_image()
+PointCloudBackProjector : +project_point_cloud()
+PointCloudClassifierAccuracyCalculator : +calculate_accuracy()
+
+OccupancyGridMaker : +make_map()
+
+OutputPointCloudClassifierAdapter : +publish_segmented_point_cloud()
+@enduml
